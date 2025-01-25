@@ -94,6 +94,7 @@ public class AuthService {
         return new ApiResponse("Success");
     }
 
+
     public ApiResponse adminSaveTeacher(AuthRegister auth) {
 
         User byPhoneNumber = userRepository.findByPhoneNumber(auth.getPhoneNumber());
@@ -102,8 +103,6 @@ public class AuthService {
         }
 
         saveUser(auth, ERole.ROLE_TEACHER);
-
-
         return new ApiResponse("Success");
     }
 

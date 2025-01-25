@@ -92,6 +92,7 @@ public class StudentService {
         return new ApiResponse(categoryDTO);
     }
 
+
     public ApiResponse getCountUserDashboard(User user) {
         Integer categoryCount = userRepository.countDistinctCategoriesByUserId(user.getId());
         Integer lessonCount = userRepository.countByLesson(user.getId());
