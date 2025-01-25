@@ -138,7 +138,7 @@ public class ResultService {
         return ResultDTO.builder()
                 .id(result.getId())
                 .userId(result.getUser().getId())
-                .userName(result.getUser().getFirstname() + " " + result.getUser().getLastname())
+                .userName(result.getUser().getFirstName() + " " + result.getUser().getLastName())
                 .categoryName(result.getCategoryName())
                 .correctAnswer(result.getCorrectAnswer())
                 .countAnswer(result.getCountAnswer())

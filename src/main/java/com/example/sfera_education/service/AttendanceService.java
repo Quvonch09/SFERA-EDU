@@ -103,8 +103,8 @@ public class AttendanceService {
 
             ResAttend resAttend = ResAttend.builder()
                     .studentId(user.getId())
-                    .studentName(user.getFirstname())
-                    .studentLastName(user.getLastname())
+                    .studentName(user.getFirstName())
+                    .studentLastName(user.getLastName())
                     .attendDtoList(attendDtoList)
                     .build();
 
@@ -142,8 +142,8 @@ public class AttendanceService {
         return attendances.stream().map(attendance1 ->
                 AttendanceDto.builder()
                         .id(attendance1.getId())
-                        .studentName(attendance1.getStudent().getFirstname())
-                        .studentLastName(attendance1.getStudent().getLastname())
+                        .studentName(attendance1.getStudent().getFirstName())
+                        .studentLastName(attendance1.getStudent().getLastName())
                         .attendance(attendance1.isAttendance())
                         .date(attendance1.getDate())
                         .build()).toList();

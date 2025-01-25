@@ -79,7 +79,7 @@ public class StatisticService {
                 // Build TopStudent object and add it to the map
                 TopStudent topStudentDTO = TopStudent.builder()
                         .id(user.getId())
-                        .fullName(user.getFirstname() + " " + user.getLastname())
+                        .fullName(user.getFirstName() + " " + user.getLastName())
                         .groupId(group.getId())
                         .groupName(group.getName())
                         .scoreMonth(score)
@@ -169,7 +169,7 @@ public class StatisticService {
                 // Build the TopTeacher object and add to the list
                 TopTeacher topTeacherDTO = TopTeacher.builder()
                         .id(teacher.getId())
-                        .fullName(teacher.getFirstname() + " " + teacher.getLastname())
+                        .fullName(teacher.getFirstName() + " " + teacher.getLastName())
                         .phoneNumber(teacher.getPhoneNumber())
                         .scoreMonth(totalScore)
                         .build();
@@ -237,7 +237,7 @@ public class StatisticService {
                 // Build the TopStudent DTO
                 TopStudent topStudentDTO = TopStudent.builder()
                         .id(student.getId())
-                        .fullName(student.getFirstname() + " " + student.getLastname())
+                        .fullName(student.getFirstName() + " " + student.getLastName())
                         .groupId(group.getId())
                         .groupName(group.getName())
                         .scoreMonth(score != null ? score : 0)  // Default to 0 if score is null

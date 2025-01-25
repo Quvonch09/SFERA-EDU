@@ -118,7 +118,7 @@ public class NotificationService {
         User admin = userRepository.findById(1L).orElse(null);
 
         String title = "Bildirishnoma!";
-        String content = "( " + user.getFirstname() + " " + user.getLastname() + " ) foydalanuvchi sizdan edu tizimga " +
+        String content = "( " + user.getFirstName() + " " + user.getLastName() + " ) foydalanuvchi sizdan edu tizimga " +
                 "kirish uchun ruxsat so'ramozda . . .";
 
         Notification notification = saveNotification(admin, title, content, 0L, false);
@@ -138,7 +138,7 @@ public class NotificationService {
         notificationRepository.deleteById(notification.getId());
 
         String title = "Bildirishnoma!";
-        String content = "Hurmatli " + user.getFirstname() + " " + user.getLastname() + ". Education platformasiga " +
+        String content = "Hurmatli " + user.getFirstName() + " " + user.getLastName() + ". Education platformasiga " +
                 "kirish uchun yuborgan o'rovingiz qabul qilinmadi!";
 
 
