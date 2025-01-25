@@ -1,5 +1,6 @@
 package com.example.sfera_education.security;
 
+import com.example.sfera_education.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

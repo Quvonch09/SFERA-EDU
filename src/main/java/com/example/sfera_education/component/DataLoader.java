@@ -1,5 +1,6 @@
 package com.example.sfera_education.component;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

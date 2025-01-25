@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
