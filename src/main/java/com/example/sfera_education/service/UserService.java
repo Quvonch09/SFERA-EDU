@@ -146,8 +146,8 @@ public class UserService {
         }
 
 
-        newUser.setFirstname(auth.getFirstName() != null && !auth.getFirstName().isEmpty() ? auth.getFirstName() : newUser.getFirstname());
-        newUser.setLastname(auth.getLastName() != null && !auth.getLastName().isEmpty() ? auth.getLastName() : newUser.getLastname());
+        newUser.setFirstName(auth.getFirstName() != null && !auth.getFirstName().isEmpty() ? auth.getFirstName() : newUser.getFirstName());
+        newUser.setLastName(auth.getLastName() != null && !auth.getLastName().isEmpty() ? auth.getLastName() : newUser.getLastName());
         newUser.setPhoneNumber(auth.getPhoneNumber() != null && !auth.getPhoneNumber().isEmpty() ? auth.getPhoneNumber() : newUser.getPhoneNumber());
 
 
@@ -166,7 +166,7 @@ public class UserService {
                 newUser,
                 "Eslatma!",
                 "Ma'lumotlaringiz yangilandi... " +
-                        "F.I.Sh: " + newUser.getFirstname() + " " + newUser.getLastname() +
+                        "F.I.Sh: " + newUser.getFirstName() + " " + newUser.getLastName() +
                         "Telefon: " + newUser.getPhoneNumber(),
                 0L,
                 false
@@ -302,8 +302,8 @@ public class UserService {
 
         return UserDTO.builder()
                 .userId(user.getId())
-                .firstName(user.getFirstname())
-                .lastName(user.getLastname())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
                 .fileId(user.getFile() != null ? user.getFile().getId() : null)
                 .role(user.getRole().name())

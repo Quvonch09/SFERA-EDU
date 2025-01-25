@@ -72,7 +72,7 @@ public class RateService {
 
             Group group = groupRepository.findById(user.getGroupId()).orElseThrow();
             ResRateStudent resRateStudent = ResRateStudent.builder()
-                    .fullName(user.getFirstname() + " " + user.getLastname())
+                    .fullName(user.getFirstName() + " " + user.getLastName())
                     .categoryName(group.getCategory().getName())
                     .groupName(group.getName())
                     .rate(ratingStudent)
