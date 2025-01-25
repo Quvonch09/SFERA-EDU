@@ -15,7 +15,6 @@ import com.example.sfera_education.payload.ResponseError;
 import com.example.sfera_education.payload.res.ResAttend;
 import com.example.sfera_education.repository.AttendanceRepository;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

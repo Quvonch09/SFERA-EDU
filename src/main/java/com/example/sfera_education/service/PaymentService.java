@@ -19,7 +19,6 @@ import com.example.sfera_education.payload.res.ResPaymentSum;
 import com.example.sfera_education.payload.res.ResPaymentUser;
 import com.example.sfera_education.repository.GroupRepository;
 import com.example.sfera_education.repository.PaymentRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

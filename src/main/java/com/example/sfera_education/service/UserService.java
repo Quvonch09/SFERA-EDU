@@ -19,7 +19,6 @@ import com.example.sfera_education.payload.auth.ResponseLogin;
 import com.example.sfera_education.payload.res.ResPageable;
 import com.example.sfera_education.repository.FileRepository;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 import com.example.sfera_education.security.JwtProvider;
 
 import java.util.ArrayList;

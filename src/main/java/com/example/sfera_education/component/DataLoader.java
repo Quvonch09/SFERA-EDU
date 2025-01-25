@@ -10,7 +10,6 @@ import com.example.sfera_education.entity.User;
 import com.example.sfera_education.entity.enums.EDayOfWeek;
 import com.example.sfera_education.entity.enums.ERole;
 import com.example.sfera_education.repository.DayOfWeekRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 @Component
 @RequiredArgsConstructor

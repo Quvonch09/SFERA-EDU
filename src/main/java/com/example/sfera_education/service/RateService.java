@@ -1,24 +1,21 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import com.example.sfera_education.entity.Group;
 import com.example.sfera_education.entity.User;
 import com.example.sfera_education.payload.ApiResponse;
 import com.example.sfera_education.payload.ResponseError;
 import com.example.sfera_education.payload.res.GroupStatistics;
 import com.example.sfera_education.payload.res.ResPageable;
-import com.example.sfera_education.payload.res.ResRateStudent;
 import com.example.sfera_education.repository.GroupRepository;
 import com.example.sfera_education.repository.HomeWorkRepository;
-import com.example.sfera_education.repository.UserRepository;
+import com.example.sfera_education.util.ResRateStudent;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,72 +25,53 @@ public class RateService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
 
-    public ApiResponse getGroupByYearlyStatistic() {
+    public ApiResponse getGroupByYearlyStatistic()
+    {
         List<GroupStatistics> groupStatistics = homeWorkRepository.findGroupStatistics();
-        if (groupStatistics.isEmpty()) {
+        if(groupStatistics.isEmpty()){
             return new ApiResponse(ResponseError.NOTFOUND("Groups"));
         }
         return new ApiResponse(groupStatistics);
     }
 
 
-    public ApiResponse getStudents(String keyword, Integer groupId, Integer categoryId, int page, int size) {
-        PageRequest request = PageRequest.of(page, size);
-        Page<User> students = userRepository.findAlLByStudentSearchAndGroupIdAndCategoryId(keyword, groupId, categoryId, request);
-        ResPageable pageable = pageable(students, page, size);
-        return new ApiResponse(pageable);
+    public ApiResponse getStudents(String keyword,Integer groupId,Integer categoryId, int page , int size)
+    {
+
+        LocalDate startDate = LocalDate.now().withDayOfMonth(1);
+        LocalDate endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        Page<com.example.sfera_education.util.ResRateStudent> studentsWithRate =
+                userRepository.findStudentsWithRate(keyword, groupId, categoryId,
+                        startDate, endDate, PageRequest.of(page, size));
+
+        ResPageable resPageable = pageable(studentsWithRate, page, size);
+
+        return new ApiResponse(resPageable);
     }
 
-    public ApiResponse getStudentsForTeacher(User teacher, Integer groupId, int page, int size) {
-        PageRequest request = PageRequest.of(page, size);
-        Page<User> students = userRepository.findAllByGroupId(groupId, teacher.getId(), request);
-        ResPageable pageable = pageable(students, page, size);
-        return new ApiResponse(pageable);
+    public ApiResponse getStudentsForTeacher(User teacher,Integer groupId,int page,int size)
+    {
+
+        LocalDate startDate = LocalDate.now().withDayOfMonth(1);
+        LocalDate endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        Page<ResRateStudent> studentPage = userRepository.findStudentsForTeacher(teacher.getId(), groupId,
+                startDate, endDate, PageRequest.of(page, size));
+
+        return new ApiResponse(pageable(studentPage, page, size));
 
     }
 
 
-    private List<ResRateStudent> getStudentRateList(Page<User> students) {
-        LocalDate startDate = LocalDate.now().withDayOfMonth(1); // Bu oyning birinchi kuni
-        LocalDate endDate = LocalDate.now();
-        Map<ResRateStudent, Integer> rateStudentMap = new HashMap<>();
-        for (User user : students.getContent()) {
-            Integer score = homeWorkRepository.findTotalScoreByStudentsAndPeriod(user, startDate, endDate);
-            Integer ratingStudent = userRepository.getRatingStudent(user.getGroupId(), user.getId());
 
-            // Null qiymatlar uchun standart qiymatlar qo'llash
-            if (score == null) {
-                score = 0; // Yoki mos qiymat
-            }
-
-            if (ratingStudent == null) {
-                ratingStudent = 0; // Yoki mos qiymat
-            }
-
-            Group group = groupRepository.findById(user.getGroupId()).orElseThrow();
-            ResRateStudent resRateStudent = ResRateStudent.builder()
-                    .fullName(user.getFirstname() + " " + user.getLastname())
-                    .categoryName(group.getCategory().getName())
-                    .groupName(group.getName())
-                    .rate(ratingStudent)
-                    .score(score).build();
-
-            rateStudentMap.put(resRateStudent, score);
-        }
-        return rateStudentMap.entrySet().stream()
-                .sorted(Map.Entry.<ResRateStudent, Integer>comparingByValue().reversed())
-                .map(Map.Entry::getKey)
-                .toList();
-    }
-
-    private ResPageable pageable(Page<User> students, int page, int size) {
-        List<ResRateStudent> studentRateList = getStudentRateList(students);
+    private ResPageable pageable(Page<com.example.sfera_education.util.ResRateStudent> students, int page, int size)
+    {
         ResPageable resPageable = new ResPageable();
         resPageable.setPage(page);
         resPageable.setSize(size);
         resPageable.setTotalElements(students.getTotalElements());
         resPageable.setTotalPage(students.getTotalPages());
-        resPageable.setBody(studentRateList);
+        resPageable.setBody(students.getContent());
         return resPageable;
     }
 }

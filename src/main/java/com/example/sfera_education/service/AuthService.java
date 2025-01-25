@@ -12,7 +12,6 @@ import com.example.sfera_education.payload.auth.AuthLogin;
 import com.example.sfera_education.payload.auth.AuthRegister;
 import com.example.sfera_education.payload.auth.ResponseLogin;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 import com.example.sfera_education.security.JwtProvider;
 
 import java.util.List;
