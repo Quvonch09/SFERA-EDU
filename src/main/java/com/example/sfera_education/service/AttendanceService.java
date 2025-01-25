@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import com.example.sfera_education.payload.ResponseError;
 import com.example.sfera_education.payload.res.ResAttend;
 import com.example.sfera_education.repository.AttendanceRepository;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -103,8 +103,8 @@ public class AttendanceService {
 
             ResAttend resAttend = ResAttend.builder()
                     .studentId(user.getId())
-                    .studentName(user.getFirstname())
-                    .studentLastName(user.getLastname())
+                    .studentName(user.getFirstName())
+                    .studentLastName(user.getLastName())
                     .attendDtoList(attendDtoList)
                     .build();
 
@@ -142,8 +142,8 @@ public class AttendanceService {
         return attendances.stream().map(attendance1 ->
                 AttendanceDto.builder()
                         .id(attendance1.getId())
-                        .studentName(attendance1.getStudent().getFirstname())
-                        .studentLastName(attendance1.getStudent().getLastname())
+                        .studentName(attendance1.getStudent().getFirstName())
+                        .studentLastName(attendance1.getStudent().getLastName())
                         .attendance(attendance1.isAttendance())
                         .date(attendance1.getDate())
                         .build()).toList();

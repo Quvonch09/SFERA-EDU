@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,6 @@ import com.example.sfera_education.payload.res.ResPaymentSum;
 import com.example.sfera_education.payload.res.ResPaymentUser;
 import com.example.sfera_education.repository.GroupRepository;
 import com.example.sfera_education.repository.PaymentRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,7 +64,7 @@ public class PaymentService {
                 .paymentId(payment.getId())
                 .paySum(payment.getPaySum())
                 .paymentType(payment.getPayType().name())
-                .userName(payment.getStudent().getLastname() + " " + payment.getStudent().getFirstname())
+                .userName(payment.getStudent().getLastName() + " " + payment.getStudent().getFirstName())
                 .createdAt(payment.getCreatedAt())
                 .payDate(payment.getPayDate())
                 .build();
@@ -179,7 +179,7 @@ public class PaymentService {
                     .paymentId(payment.getId())
                     .paySum(payment.getPaySum())
                     .paymentType(payment.getPayType().name())
-                    .userName(payment.getStudent().getLastname() + " " + payment.getStudent().getFirstname())
+                    .userName(payment.getStudent().getLastName() + " " + payment.getStudent().getFirstName())
                     .userId(payment.getStudent().getId())
                     .userGroupId(payment.getStudent().getGroupId())
                     .createdAt(payment.getCreatedAt())
@@ -210,8 +210,8 @@ public class PaymentService {
                     paymentRepository.findTotalPaymentByStudentAndPayDate(student, year, month);
             result.add(
                     ResPaymentUser.builder()
-                            .firstName(student.getFirstname())
-                            .lastName(student.getLastname())
+                            .firstName(student.getFirstName())
+                            .lastName(student.getLastName())
                             .payment(sumStudentPayment)
                             .build()
             );

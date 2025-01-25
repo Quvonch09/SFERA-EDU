@@ -17,19 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstname", nullable = false)
-    private String firstname;
+    @Column( nullable = false)
+    private String firstName;
 
-    @Column(name = "lastname")
-    private String lastname;
+    private String lastName;
 
     @Column(nullable = false, unique = true)
     private String phoneNumber;

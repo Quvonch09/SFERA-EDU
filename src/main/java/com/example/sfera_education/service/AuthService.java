@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import com.example.sfera_education.payload.auth.AuthLogin;
 import com.example.sfera_education.payload.auth.AuthRegister;
 import com.example.sfera_education.payload.auth.ResponseLogin;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 import com.example.sfera_education.security.JwtProvider;
 
 import java.util.List;
@@ -82,10 +82,10 @@ public class AuthService {
 
         notificationService.saveNotification(
                 user,
-                "Hurmatli " + user.getFirstname() + " " + user.getLastname() + "!",
+                "Hurmatli " + user.getFirstName() + " " + user.getLastName() + "!",
                 "Siz " + group.getName() + " guruhiga qo'shildingiz.\n" +
-                        "O'qituvchingiz: " + group.getTeacher().getFirstname() + " " +
-                        group.getTeacher().getLastname() + "\n" +
+                        "O'qituvchingiz: " + group.getTeacher().getFirstName() + " " +
+                        group.getTeacher().getLastName() + "\n" +
                         "Darslar " + group.getStartDate() + " da boshlanadi.",
                 0L,
                 false
@@ -93,6 +93,7 @@ public class AuthService {
 
         return new ApiResponse("Success");
     }
+
 
     public ApiResponse adminSaveTeacher(AuthRegister auth) {
 
@@ -102,16 +103,14 @@ public class AuthService {
         }
 
         saveUser(auth, ERole.ROLE_TEACHER);
-
-
         return new ApiResponse("Success");
     }
 
 
     private User saveUser(AuthRegister auth, ERole role) {
         User user = User.builder()
-                .firstname(auth.getFirstName())
-                .lastname(auth.getLastName())
+                .firstName(auth.getFirstName())
+                .lastName(auth.getLastName())
                 .phoneNumber(auth.getPhoneNumber())
                 .password(passwordEncoder.encode(auth.getPassword()))
                 .role(role)
@@ -125,7 +124,7 @@ public class AuthService {
 
         notificationService.saveNotification(
                 save,
-                "Salom " + save.getFirstname() + " " + save.getLastname() + "!",
+                "Salom " + save.getFirstName() + " " + save.getLastName() + "!",
                 "Siz bizning saytimizdan muvoffaqiyatli ro'yxatdan o'tganingiz bilan tabriklaymiz." +
                         "Ma'lumotlaringiz yangilandi... " +
                         "Telefon: " + save.getPhoneNumber(),

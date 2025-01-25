@@ -66,9 +66,9 @@ public class HomeWorkService {
 
         notificationService.saveNotification(
                 teacher,
-                "Hurmatli " + teacher.getFirstname() + " " + teacher.getLastname() + "!",
-                "Sizga " + group.getName() + " guruh o'quvchisi " + user.getFirstname() +
-                        " " + user.getLastname() + "\n" +
+                "Hurmatli " + teacher.getFirstName() + " " + teacher.getLastName() + "!",
+                "Sizga " + group.getName() + " guruh o'quvchisi " + user.getFirstName() +
+                        " " + user.getLastName() + "\n" +
                         " topshiriq jo'natdi.",
                 0L,
                 false
@@ -95,8 +95,8 @@ public class HomeWorkService {
                 Group group = groupRepository.findById(userByHome.getGroupId()).orElse(null);
                 UserDTO userDTO = UserDTO.builder()
                         .userId(userByHome.getId())
-                        .firstName(userByHome.getFirstname())
-                        .lastName(userByHome.getLastname())
+                        .firstName(userByHome.getFirstName())
+                        .lastName(userByHome.getLastName())
                         .groupId(userByHome.getGroupId())
                         .groupName(group != null ? group.getName() : null)
                         .build();
@@ -188,8 +188,8 @@ public class HomeWorkService {
         for (HomeWork homeWork : allByFilter.getContent()) {
             ResHomeWork resHomeWork = ResHomeWork.builder()
                     .studentId(homeWork.getStudent().getId())
-                    .firstName(homeWork.getStudent().getFirstname())
-                    .lastName(homeWork.getStudent().getLastname())
+                    .firstName(homeWork.getStudent().getFirstName())
+                    .lastName(homeWork.getStudent().getLastName())
                     .groupName(Objects.requireNonNull(groupRepository.findById(homeWork.getStudent().getGroupId()).orElse(null)).getName())
                     .homeworkId(homeWork.getId())
                     .build();
