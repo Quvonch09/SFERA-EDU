@@ -20,7 +20,6 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-
 public class StatisticService {
 
     private final UserRepository userRepository;
@@ -57,7 +56,7 @@ public class StatisticService {
         // Fetch active students with the role of STUDENT
         List<User> activeStudents = userRepository.findByRole(ERole.ROLE_STUDENT);
         if (activeStudents.isEmpty()) {
-            return new ApiResponse(ResponseError.NOTFOUND("User list"));
+            return new ApiResponse(List.of());
         }
 
         Map<TopStudent, Integer> topStudentMap = new HashMap<>();
@@ -107,7 +106,7 @@ public class StatisticService {
     public ApiResponse getTopGroup() {
         List<Group> groups = groupRepository.findAllByActiveTrue();
         if (groups.isEmpty()) {
-            return new ApiResponse(ResponseError.NOTFOUND("Group list"));
+            return new ApiResponse(List.of());
         }
 
         Map<TopGroup, Integer> topGroupMap = new HashMap<>();
@@ -539,5 +538,4 @@ public class StatisticService {
                 .build();
         return new ApiResponse(onlineStatisticDto);
     }
-
 }

@@ -1,15 +1,16 @@
 package com.example.sfera_education.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import com.example.sfera_education.entity.*;
 import com.example.sfera_education.payload.ApiResponse;
 import com.example.sfera_education.payload.ResponseError;
 import com.example.sfera_education.payload.TaskDto;
 import com.example.sfera_education.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,33 +54,27 @@ public class TaskService {
         if (lesson == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Lesson"));
         }
-        List<TaskDto> taskList = getTaskList(lesson.getId(), user);
-        return new ApiResponse(taskList);
+        return new ApiResponse(getTaskList(lesson.getId(), user));
     }
 
 
     public ApiResponse getOneTask(Integer taskId, User user) {
         Task task = taskRepository.findById(taskId).orElse(null);
-
         if (task == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Task"));
         }
 
         User student = userRepository.findById(user.getId()).orElse(null);
-
         if (student == null) {
             return new ApiResponse(ResponseError.NOTFOUND("User"));
         }
 
         boolean exists = true;
-
         if (student.getRole().name().equals("ROLE_STUDENT")) {
             exists = homeWorkRepository.existsByTaskIdAndStudentId(taskId, user.getId());
         }
 
-        TaskDto taskDto = parsTaskDto(task, exists);
-
-        return new ApiResponse(taskDto);
+        return new ApiResponse(parsTaskDto(task, exists));
     }
 
 
@@ -100,7 +95,6 @@ public class TaskService {
 
     public ApiResponse deleteTask(Integer taskId) {
         Task task = taskRepository.findById(taskId).orElse(null);
-
         if (task == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Task"));
         }
@@ -113,7 +107,7 @@ public class TaskService {
     private List<TaskDto> getTaskList(Integer lessonId, User user) {
         List<Task> tasks = taskRepository.findAllByLessonId(lessonId);
         if (tasks.isEmpty()) {
-            return null;
+            return List.of();
         }
 
         List<TaskDto> taskDtoList = new ArrayList<>();
@@ -131,7 +125,7 @@ public class TaskService {
                 .id(task.getId())
                 .name(task.getName())
                 .description(task.getDescription())
-                .fileId(task.getFile() != null ? task.getFile().getId() : null)
+                .fileId(Optional.ofNullable(task.getFile()).map(File::getId).orElse(null))
                 .lessonId(task.getLesson().getId())
                 .send(send)
                 .build();

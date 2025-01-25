@@ -1,11 +1,5 @@
 package com.example.sfera_education.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import com.example.sfera_education.entity.File;
 import com.example.sfera_education.entity.Group;
 import com.example.sfera_education.entity.User;
@@ -21,10 +15,15 @@ import com.example.sfera_education.repository.FileRepository;
 import com.example.sfera_education.repository.GroupRepository;
 import com.example.sfera_education.repository.UserRepository;
 import com.example.sfera_education.security.JwtProvider;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +51,6 @@ public class UserService {
         user.setRole(ERole.ROLE_TEACHER);
         user.setGroupId(null);
         userRepository.save(user);
-
         return new ApiResponse("Success");
     }
 
@@ -91,13 +89,11 @@ public class UserService {
 
     public ApiResponse updateUserGroup(Long userId, Integer groupId) {
         User user = userRepository.findById(userId).orElse(null);
-
         if (user == null) {
             return new ApiResponse(ResponseError.NOTFOUND("User"));
         }
 
         Group group = groupRepository.findById(groupId).orElse(null);
-
         if (group == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Group"));
         }
@@ -105,6 +101,7 @@ public class UserService {
         if (user.getGroupId() != null && user.getGroupId().equals(groupId)) {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Group"));
         }
+
         if (user.getGroupId() != null && user.getRole().equals(ERole.ROLE_STUDENT)) {
             Group userGroup = groupRepository.findById(user.getGroupId()).orElse(null);
             assert userGroup != null;
@@ -122,7 +119,6 @@ public class UserService {
             return new ApiResponse("Success");
         }
         return new ApiResponse(ResponseError.DEFAULT_ERROR("Userning groupi mavjud emas"));
-
     }
 
 
@@ -145,22 +141,19 @@ public class UserService {
             }
         }
 
-
-        newUser.setFirstName(auth.getFirstName() != null && !auth.getFirstName().isEmpty() ? auth.getFirstName() : newUser.getFirstName());
-        newUser.setLastName(auth.getLastName() != null && !auth.getLastName().isEmpty() ? auth.getLastName() : newUser.getLastName());
-        newUser.setPhoneNumber(auth.getPhoneNumber() != null && !auth.getPhoneNumber().isEmpty() ? auth.getPhoneNumber() : newUser.getPhoneNumber());
-
+        newUser.setFirstName(Optional.ofNullable(auth.getFirstName()).orElse(newUser.getFirstName()));
+        newUser.setLastName(Optional.ofNullable(auth.getLastName()).orElse(newUser.getLastName()));
+        newUser.setPhoneNumber(Optional.ofNullable(auth.getPhoneNumber()).orElse(newUser.getPhoneNumber()));
 
         if (auth.getPassword() != null && !auth.getPassword().isEmpty()) {
             newUser.setPassword(passwordEncoder.encode(auth.getPassword()));
         }
 
         newUser.setFile(file);
-        User save = userRepository.save(newUser);
+        userRepository.save(newUser);
 
-        String token = jwtProvider.generateToken(save.getPhoneNumber());
-        ResponseLogin responseLogin = new ResponseLogin(token, save.getRole().name(), save.getId());
-
+        String token = jwtProvider.generateToken(newUser.getPhoneNumber());
+        ResponseLogin responseLogin = new ResponseLogin(token, newUser.getRole().name(), newUser.getId());
 
         notificationService.saveNotification(
                 newUser,
@@ -183,9 +176,7 @@ public class UserService {
             return new ApiResponse(ResponseError.NOTFOUND("User"));
         }
 
-        UserDTO userDTO = createUserDTO(newUser);
-
-        return new ApiResponse(userDTO);
+        return new ApiResponse(createUserDTO(newUser));
     }
 
 
@@ -223,7 +214,7 @@ public class UserService {
 
         List<UserDTO> userDTOList = userPage.getContent().stream()
                 .map(this::createUserDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         ResPageable resPageable = new ResPageable();
         resPageable.setPage(page);
@@ -237,35 +228,28 @@ public class UserService {
 
 
     public ApiResponse searchUserAdmin(String name, String phoneNumber, int page, int size) {
-        Page<User> allByRoleAndEnabledTrue =
-                userRepository.searchNameOrPhoneNumber(name, phoneNumber, PageRequest.of(page, size));
-        List<UserDTO> userDTOList = new ArrayList<>();
-        for (User user : allByRoleAndEnabledTrue.getContent()) {
-
-            userDTOList.add(createUserDTO(user));
+        Page<User> pages = userRepository.searchNameOrPhoneNumber(name, phoneNumber, PageRequest.of(page, size));
+        if(pages.getContent().isEmpty()){
+            return new ApiResponse(List.of());
         }
 
         ResPageable resPageable = new ResPageable();
         resPageable.setPage(page);
         resPageable.setSize(size);
-        resPageable.setBody(userDTOList);
-        resPageable.setTotalPage(allByRoleAndEnabledTrue.getTotalPages());
-        resPageable.setTotalElements(allByRoleAndEnabledTrue.getTotalElements());
+        resPageable.setBody(pages.getContent().stream().map(this::createUserDTO).toList());
+        resPageable.setTotalPage(pages.getTotalPages());
+        resPageable.setTotalElements(pages.getTotalElements());
         return new ApiResponse(resPageable);
     }
 
 
     public ApiResponse findAllTeacher() {
-        List<User> byRole = userRepository.findByRole(ERole.ROLE_TEACHER);
-        if (byRole.isEmpty()) {
-            return new ApiResponse(ResponseError.NOTFOUND("Teacher"));
+        List<User> teachers = userRepository.findByRole(ERole.ROLE_TEACHER);
+        if (teachers.isEmpty()) {
+            return new ApiResponse(List.of());
         }
 
-        List<UserDTO> userDTOList = new ArrayList<>();
-        for (User user : byRole) {
-            userDTOList.add(createUserDTO(user));
-        }
-        return new ApiResponse(userDTOList);
+        return new ApiResponse(teachers.stream().map(this::createUserDTO).toList());
     }
 
 
@@ -305,11 +289,10 @@ public class UserService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
-                .fileId(user.getFile() != null ? user.getFile().getId() : null)
+                .fileId(Optional.ofNullable(user.getFile()).map(File::getId).orElse(null))
                 .role(user.getRole().name())
-                .groupName(group != null ? group.getName() : null)
+                .groupName(Optional.ofNullable(group).map(Group::getName).orElse(null))
                 .countGroup(countGroup)
                 .build();
     }
-
 }
