@@ -60,5 +60,4 @@ public class DataLoader implements CommandLineRunner {
             dayOfWeekRepository.save(sunday);
         }
     }
-
 }
