@@ -127,7 +127,7 @@ public class GroupService {
         for (User student : group.getStudents()) {
             ResGroupStudents resGroupStudents1 = ResGroupStudents.builder()
                     .studentId(student.getId())
-                    .fullName(student.getFirstname() + " " + student.getLastname())
+                    .fullName(student.getFirstName() + " " + student.getLastName())
                     .active(true)
                     .build();
             resGroupStudents.add(resGroupStudents1);
@@ -136,7 +136,7 @@ public class GroupService {
         for (User deleteStudent : group.getDeleteStudents()) {
             ResGroupStudents resDelStudent = ResGroupStudents.builder()
                     .studentId(deleteStudent.getId())
-                    .fullName(deleteStudent.getFirstname() + " " + deleteStudent.getLastname())
+                    .fullName(deleteStudent.getFirstName() + " " + deleteStudent.getLastName())
                     .active(false)
                     .build();
             resGroupStudents.add(resDelStudent);
@@ -216,7 +216,7 @@ public class GroupService {
                 .categoryId(group.getCategory().getId())
                 .name(group.getName())
                 .teacherId(group.getTeacher().getId())
-                .teacherName(group.getTeacher().getFirstname() + " " + group.getTeacher().getLastname())
+                .teacherName(group.getTeacher().getFirstName() + " " + group.getTeacher().getLastName())
                 .startDate(group.getStartDate())
                 .active(group.isActive())
                 .startTime(group.getStartTime())
@@ -227,7 +227,7 @@ public class GroupService {
     private ResGroupStudents resGroupStudents(User user) {
         return ResGroupStudents.builder()
                 .studentId(user.getId())
-                .fullName(user.getFirstname() + " " + user.getLastname())
+                .fullName(user.getFirstName() + " " + user.getLastName())
                 .build();
     }
 }

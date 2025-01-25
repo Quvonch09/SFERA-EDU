@@ -104,7 +104,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query(value = """
-            select count(u) from User u
+            select count(u) from users u
             inner join Group g ON u.groupId = g.id
             where u.role = 'ROLE_STUDENT' and g.teacher.id = :teacherId
             """)
@@ -112,7 +112,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query(value = """
-            select u from User u
+            select u from users u
             inner join Group g ON u.groupId = g.id
             where u.role = 'ROLE_STUDENT' and g.teacher.id = :teacherId
             """)
