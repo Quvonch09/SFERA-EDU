@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,6 @@ import com.example.sfera_education.payload.res.ResPaymentSum;
 import com.example.sfera_education.payload.res.ResPaymentUser;
 import com.example.sfera_education.repository.GroupRepository;
 import com.example.sfera_education.repository.PaymentRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

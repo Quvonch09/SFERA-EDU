@@ -1,5 +1,13 @@
 package com.example.sfera_education.service;
 
+
+import com.example.sfera_education.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import com.example.sfera_education.entity.File;
 import com.example.sfera_education.entity.Group;
 import com.example.sfera_education.entity.User;
@@ -13,7 +21,6 @@ import com.example.sfera_education.payload.auth.ResponseLogin;
 import com.example.sfera_education.payload.res.ResPageable;
 import com.example.sfera_education.repository.FileRepository;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 import com.example.sfera_education.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

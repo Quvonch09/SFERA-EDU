@@ -1,5 +1,6 @@
 package com.example.sfera_education.controller;
 
+import com.example.sfera_education.service.RateService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.sfera_education.entity.User;
 import com.example.sfera_education.payload.ApiResponse;
 import com.example.sfera_education.security.CurrentUser;
-import com.example.sfera_education.service.RateService;
 
 
 @CrossOrigin

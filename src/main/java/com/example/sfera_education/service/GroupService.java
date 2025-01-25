@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,6 @@ import com.example.sfera_education.payload.res.ResGroupStudents;
 import com.example.sfera_education.repository.CategoryRepository;
 import com.example.sfera_education.repository.DayOfWeekRepository;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

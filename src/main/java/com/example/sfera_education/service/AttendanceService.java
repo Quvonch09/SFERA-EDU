@@ -1,5 +1,6 @@
 package com.example.sfera_education.service;
 
+import com.example.sfera_education.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import com.example.sfera_education.payload.ResponseError;
 import com.example.sfera_education.payload.res.ResAttend;
 import com.example.sfera_education.repository.AttendanceRepository;
 import com.example.sfera_education.repository.GroupRepository;
-import com.example.sfera_education.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
